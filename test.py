@@ -18,5 +18,15 @@ def run():
     print weights
     lr.plotBestFit(weights)
 
+
+def runColic():
+    """
+    疝气病病马案例测试
+    :return:
+    """
+    lr.multiTest()
+
+
 if __name__ == '__main__':
-    run()
+    # run()
+    runColic()
