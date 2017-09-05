@@ -11,7 +11,7 @@
 
 """
 import codecs
-
+import random
 import numpy as np
 
 from numpy import mat, shape, ones, exp
@@ -78,8 +78,42 @@ def plotBestFit(weights):
     ax.scatter(xrecord1, yrecord1, s=30, c='red', marker='s')
     ax.scatter(xrecord2, yrecord2, s=30, c='green')
     x = np.arange(-3, 3, 0.1)
-    y = (-weights[0]-weights[1]*x)/weights[2]
-    ax.plot(x,y)
+    y = (-weights[0] - weights[1] * x) / weights[2]
+    ax.plot(x, y)
     plt.xlabel('x1')
     plt.ylabel('x2')
     plt.show()
+
+
+def stocGradAscent0(dataMat, classLabel):
+    """
+    随机梯度上升算法，一次仅仅用一个样本点更新回归系数
+    :param dataMat:
+    :param classLabel:
+    :return:
+    """
+    dataMat = np.array(dataMat)
+    m, n = shape(dataMat)
+    alpha = 0.01
+    weights = ones(n)
+    for i in range(m):
+        hx = sigmoid(np.sum(dataMat[i] * weights))
+        error = classLabel[i] - hx
+        weights += alpha * error * dataMat[i]
+    return weights
+
+
+def stocGradAscent1(dataMat, classLabel, numIter=150):
+    dataMat = np.array(dataMat)
+    m, n = shape(dataMat)
+    weights = ones(n)
+    for j in range(numIter):
+        dataIndex = range(m)
+        for i in range(m):
+            alpha = 4 / (1.0 + j + i) + 0.01  # alpha每次迭代时需要调整
+            randIndex = int(random.uniform(0, len(dataIndex)))  # 随机选取更新
+            hx = sigmoid(np.sum(dataMat[randIndex] * weights))
+            error = classLabel[randIndex] - hx
+            weights += alpha * error * dataMat[randIndex]
+            del (dataIndex[randIndex])
+    return weights

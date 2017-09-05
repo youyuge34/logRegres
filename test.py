@@ -14,7 +14,7 @@ import logRegres as lr
 
 def run():
     dataMat,labelMat = lr.loadDataSet()
-    weights = lr.gradAscent(dataMat,labelMat)
+    weights = lr.stocGradAscent1(dataMat,labelMat)
     print weights
     lr.plotBestFit(weights)
 
